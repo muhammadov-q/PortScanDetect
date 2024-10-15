@@ -1,0 +1,5 @@
+flask==1.1.2
+pyshark==0.4.2.9
+werkzeug==1.0.1
+chart.js==2.9.4
+DataTables==1.10.21
