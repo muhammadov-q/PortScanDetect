@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}Scan Results{% endblock %}
+
+{% block breadcrumbs %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('upload_file') }}">Upload</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Results</li>
+    </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+<h1 class="text-center">Scan Results</h1>
+
+<!-- Charts Section -->
+<div class="row">
+    <div class="col-md-6">
+        <canvas id="protocolChart"></canvas>
+    </div>
+    <div class="col-md-6">
+        <canvas id="srcIpChart"></canvas>
+    </div>
+</div>
+
+<!-- Table Section -->
+<div class="mt-5">
+    <h3>Packet Details</h3>
+    <table id="packetTable" class="display table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Time</th>
+                <th>Source</th>
+                <th>Destination</th>
+                <th>Protocol</th>
+                <th>Length</th>
+                <th>Info</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for packet in data['packet_list'] %}
+            <tr>
+                <td>{{ packet.no }}</td>
+                <td>{{ packet.time }}</td>
+                <td>{{ packet.source }}</td>
+                <td>{{ packet.destination }}</td>
+                <td>{{ packet.protocol }}</td>
+                <td>{{ packet.length }}</td>
+                <td>{{ packet.info }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Summary Section -->
+<div class="mt-5">
+    <h3>Summary</h3>
+    <ul>
+        <li>Total Packets: {{ data['total_packets'] }}</li>
+        <li>TCP Packets: {{ data['tcp_packets'] }}</li>
+        <li>UDP Packets: {{ data['udp_packets'] }}</li>
+        <li>ICMP Packets: {{ data['icmp_packets'] }}</li>
+        <li>Other Packets: {{ data['other_packets'] }}</li>
+    </ul>
+</div>
+
+<!-- Back to Upload -->
+<a href="{{ url_for('upload_file') }}" class="btn btn-link">Upload another file</a>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Initialize DataTable
+    $(document).ready(function() {
+        $('#packetTable').DataTable();
+    });
+
+    // Prepare data for charts
+    var protocolData = {
+        labels: {{ data['protocols'].keys()|list|safe }},
+        datasets: [{
+            label: 'Protocols',
+            data: {{ data['protocols'].values()|list|safe }},
+            backgroundColor: [
+                '#FF6384', '#36A2EB', '#FFCE56', '#66BB6A', '#FFA726', '#AB47BC', '#26A69A'
+            ]
+        }]
+    };
+
+    var srcIpData = {
+        labels: {{ data['src_ips'].keys()|list|safe }},
+        datasets: [{
+            label: 'Source IPs',
+            data: {{ data['src_ips'].values()|list|safe }},
+            backgroundColor: 'rgba(54, 162, 235, 0.6)'
+        }]
+    };
+
+    // Render Protocol Chart
+    var ctx = document.getElementById('protocolChart').getContext('2d');
+    var protocolChart = new Chart(ctx, {
+        type: 'pie',
+        data: protocolData,
+        options: {
+            responsive: true
+        }
+    });
+
+    // Render Source IP Chart
+    var ctx2 = document.getElementById('srcIpChart').getContext('2d');
+    var srcIpChart = new Chart(ctx2, {
+        type: 'bar',
+        data: srcIpData,
+        options: {
+            responsive: true,
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        autoSkip: false
+                    }
+                }]
+            }
+        }
+    });
+</script>
+{% endblock %}

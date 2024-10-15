@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Upload PCAP File{% endblock %}
+
+{% block breadcrumbs %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Upload</li>
+    </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+<h1 class="text-center">Upload a PCAP File for Analysis</h1>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <div class="alert alert-warning">
+    {% for message in messages %}
+      {{ message }}
+    {% endfor %}
+  </div>
+  {% endif %}
+{% endwith %}
+<div class="card p-4">
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="file">Select PCAP File</label>
+            <input type="file" name="file" id="file" accept=".pcap,.pcapng" required class="form-control-file">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Upload and Analyze</button>
+    </form>
+</div>
+{% endblock %}
