@@ -40,7 +40,7 @@ python port_scan_detect.py path/to/your/pcap/file.pcap --full
 
 ## Output
 
-The script will display the following information:
+The script will display the following information tests/demo.gif:
 
 - **Closed Ports**: Displays the number of closed ports for each IP.
 - **Scan Types**: Lists the IP addresses and ports involved in Null, Xmas, and Half-Open scans.
