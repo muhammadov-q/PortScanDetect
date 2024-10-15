@@ -22,7 +22,7 @@ The **PCAP Analyzer Web Application** is a powerful and user-friendly tool desig
 
 A video showing the demo of the application:
 
-![Demo of the feature](![Demo of the feature](https://github.com/muhammadov-q/PortScanDetect/blob/kobiljon/tests/demo.gif)
+![Demo of the feature](https://github.com/muhammadov-q/PortScanDetect/blob/kobiljon/tests/demo.gif)
 
 ## Usage Of port_scan_detect.py
 
